@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Z Studio | House of Furniture</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FFFFFF;
+            --secondary: #E8E8E8;
+            --accent-blue: #C5A059;
+            --accent-green: #C5A059;
+            --accent-orange: #C5A059;
+            --accent-red: #C5A059;
+            --text-dark: #000000;
+            --text-light: #333333;
+            --border: #D4AF37;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #C5A059;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #C5A059;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #C5A059;
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-red), var(--accent-green), var(--accent-orange));
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #808080, #404040);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(197, 160, 89, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 70px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-carousel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        .hero-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            text-align: left;
+            max-width: 600px;
+            margin-left: 5%;
+            animation: fadeInLeft 1s ease;
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: white;
+            line-height: 1.2;
+            font-weight: 700;
+        }
+
+        .hero-content p {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--accent-red);
+            text-align: center;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-red), var(--accent-green), var(--accent-orange));
+            border-radius: 2px;
+        }
+
+        /* About Section */
+        .about {
+            background-color: var(--secondary);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-light);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Team Section */
+        .team {
+            background-color: var(--primary);
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .team-member {
+            text-align: center;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .team-member-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #C5A059, #C5A059);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-member-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .team-member h3 {
+            color: var(--accent-red);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .team-member p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Services Section */
+        .services {
+            background-color: var(--secondary);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid var(--border);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-red);
+            box-shadow: 0 10px 30px rgba(197, 160, 89, 0.2);
+        }
+
+        .service-card-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #C5A059, #C5A059);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            overflow: hidden;
+        }
+
+        .service-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .service-card-content {
+            padding: 1.5rem;
+        }
+
+        .service-card h3 {
+            color: var(--accent-red);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .service-card p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Catalogs Section */
+        .catalogs {
+            background-color: var(--primary);
+        }
+
+        .catalog-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            background: white;
+            color: var(--text-dark);
+            border: 2px solid var(--accent-red);
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #C5A059, #C5A059);
+            color: white;
+            border-color: transparent;
+        }
+
+        .tab-button:hover {
+            background: linear-gradient(135deg, #C5A059, #C5A059);
+            color: white;
+            border-color: transparent;
+        }
+
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            justify-items: center;
+        }
+
+        .catalog-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            max-width: 100%;
+        }
+
+        .catalog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .catalog-card-image {
+            width: 100%;
+            aspect-ratio: 3/4;
+            background: linear-gradient(135deg, #C5A059, #C5A059);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            overflow: hidden;
+        }
+
+        .catalog-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .catalog-card-content {
+            padding: 1rem;
+        }
+
+        .catalog-card h4 {
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .download-button {
+            background: linear-gradient(135deg, #C5A059, #C5A059);
+            color: white;
+            padding: 0.5rem 0.8rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .download-button:hover {
+            transform: translateX(-3px);
+            box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3);
+        }
+
+        /* Clients Section */
+        .clients {
+            background-color: var(--secondary);
+            text-align: center;
+        }
+
+        .clients-description {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .clients-carousel-container {
+            overflow: hidden;
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .clients-carousel {
+            display: flex;
+            gap: 2rem;
+            animation: scroll 30s linear infinite;
+            width: fit-content;
+        }
+
+        .clients-carousel:hover {
+            animation-play-state: paused;
+        }
+
+        .client-logo {
+            min-width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-red);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            border: 2px solid var(--border);
+            font-weight: 600;
+            overflow: hidden;
+            flex-shrink: 0;
+            filter: grayscale(100%);
+        }
+
+        .client-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 8px;
+        }
+
+        .client-logo:hover {
+            filter: grayscale(0%);
+            transform: scale(1.1);
+            border-color: var(--accent-red);
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Contact Section */
+        .contact {
+            background-color: var(--primary);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .contact-item i {
+            color: var(--accent-red);
+            font-size: 1.5rem;
+            margin-top: 0.25rem;
+        }
+
+        .contact-item h4 {
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+        }
+
+        .contact-item p {
+            color: var(--text-light);
+        }
+
+        #map-container {
+            margin-top: 1rem;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 300px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--border);
+        }
+
+        #map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-form input,
+        .contact-form textarea,
+        .contact-form select {
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus,
+        .contact-form select:focus {
+            outline: none;
+            border-color: var(--accent-red);
+            box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.1);
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .contact-form button {
+            background: linear-gradient(135deg, #C5A059, #C5A059);
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .contact-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(197, 160, 89, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            border-top: 3px solid var(--accent-red);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-red);
+            transform: scale(1.2);
+        }
+
+        /* Floating Buttons */
+        .floating-buttons {
+            position: fixed;
+            right: 2rem;
+            bottom: 2rem;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .float-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            color: white;
+            animation: pulse 2s infinite;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .whatsapp-button {
+            background: #25D366;
+        }
+
+        .whatsapp-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
+        }
+
+        .scroll-top {
+            background: linear-gradient(135deg, #C5A059, #C5A059);
+            color: white;
+            display: none;
+        }
+
+        .scroll-top.show {
+            display: flex;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-3px);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(197, 160, 89, 0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 0.5rem 1rem;
+            }
+
+            .nav-links {
+                gap: 0.5rem;
+                font-size: 0.8rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-content p {
+                font-size: 0.9rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 3rem 1rem;
+            }
+
+            section h2 {
+                font-size: 1.8rem;
+            }
+
+            .floating-buttons {
+                right: 1rem;
+                bottom: 1rem;
+            }
+
+            .float-button {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">Z STUDIO</div>
+        <ul class="nav-links">
+            <li><a href="#home" class="nav-link active">Home</a></li>
+            <li><a href="#about" class="nav-link">About</a></li>
+            <li><a href="#team" class="nav-link">Team</a></li>
+            <li><a href="#services" class="nav-link">Services</a></li>
+            <li><a href="#catalogs" class="nav-link">Catalogs</a></li>
+            <li><a href="#clients" class="nav-link">Clients</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+            <li><a href="https://wa.me/201221494684" class="cta-button" target="_blank"><i class="fab fa-whatsapp"></i> Chat</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-carousel" id="heroCarousel">
+            </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Z Studio<br>Where Design Meets Professionalism</h1>
+            <p>Premium furniture and advertising solutions for your creative spaces</p>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <a href="#services" class="cta-button">Explore Services</a>
+                <a href="#contact" class="cta-button" style="background: white; color: var(--accent-red); border: 2px solid var(--accent-red);">Get in Touch</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <h2>About Z Studio</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <p><strong>Z Studio - House of Furniture</strong> is a leading provider of premium furniture and advertising solutions.</p>
+                <p><strong>From Scratch:</strong> We are not influenced by industrial concepts but by artisan production and method. We produce in cycles that depend on our hands, proving we have no limit except our minds.</p>
+                <p>Our products are formed and designed in an international context inspired by different cultures and countries, known through traveling and experiences.</p>
+            </div>
+            <div class="about-image">
+                <img src="data:image/jpeg;base64,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" alt="About Image">
+            </div>
+        </div>
+    </section>
+
+    <section class="team" id="team">
+        <h2>Our Team</h2>
+        <div class="team-grid" id="teamGrid">
+            </div>
+    </section>
+
+    <section class="services" id="services">
+        <h2>Our Services</h2>
+        <div class="services-grid" id="servicesGrid">
+            </div>
+    </section>
+
+    <section class="catalogs" id="catalogs">
+        <h2>Product Catalogs</h2>
+        <div class="catalog-tabs" id="catalogTabs">
+            </div>
+        <div class="catalog-grid" id="catalogGrid">
+            </div>
+    </section>
+
+    <section class="clients" id="clients">
+        <h2>Our Clients</h2>
+        <p class="clients-description">Trusted by leading companies worldwide</p>
+        <div class="clients-carousel-container">
+            <div class="clients-carousel" id="clientsCarousel">
+                </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <h2>Contact Us</h2>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <h4>Address</h4>
+                        <p>Z Studio, Cairo, Egypt</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <h4>Phone</h4>
+                        <p>+20 122 149 4684</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <h4>Email</h4>
+                        <p>info@zstudio.com</p>
+                    </div>
+                </div>
+                <div id="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3451.1711200174095!2d31.2357116!3d30.0444196!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzDCsDAyJzM5LjkiTiAzMcKwMTQnMDguNiJF!5e0!3m2!1sen!2seg!4v1625000000000!5m2!1sen!2seg" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+            <form class="contact-form" id="contactForm">
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <select required>
+                    <option value="" disabled selected>Select Subject</option>
+                    <option value="furniture">Furniture Inquiry</option>
+                    <option value="advertising">Advertising Inquiry</option>
+                    <option value="other">Other</option>
+                </select>
+                <textarea placeholder="Your Message" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+            <p>&copy; 2024 Z Studio. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div class="floating-buttons">
+        <a href="https://wa.me/201221494684" class="float-button whatsapp-button" target="_blank">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <button class="float-button scroll-top" id="scrollTopBtn">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+    </div>
+
+    <script>
+        // Data Definitions
+        const heroSlides = [
+            'https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&w=1600&q=80',
+            'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1600&q=80',
+            'https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1600&q=80'
+        ];
+
+        const teamMembers = [
+            { name: 'M. Zakaria', role: 'CEO', image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&q=80' },
+            { name: 'G. El-Gabry', role: 'COO', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80' },
+            { name: 'A. Abdel-Hameed', role: 'Head of Architecture', image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80' },
+            { name: 'H. Said', role: 'Head of Furniture', image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80' }
+        ];
+
+        const services = [
+            { title: 'Office Furniture', desc: 'Ergonomic and elegant office spaces', icon: 'fas fa-chair', image: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=600&q=80' },
+            { title: 'Hospitality Furniture', desc: 'Premium solutions for hotels and restaurants', icon: 'fas fa-hotel', image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80' },
+            { title: 'Advertising Services', desc: 'Creative indoor and outdoor branding', icon: 'fas fa-ad', image: 'https://images.unsplash.com/photo-1542744094-3a31f103e35f?auto=format&fit=crop&w=600&q=80' }
+        ];
+
+        const catalogs = {
+            furniture: [
+                { name: 'Office Furniture Overview', url: 'https://drive.google.com/file/d/1k4vq_u5wU_tbUW7cTaqPp9riElOda34T/view', cover: 'https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&w=300&q=80' },
+                { name: 'Desks & Drawer Units', url: 'https://drive.google.com/file/d/12Fsh4rRF1r_nEWq74eOBD2a9gyQV08Af/view', cover: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=300&q=80' },
+                { name: 'Office Chairs', url: 'https://drive.google.com/file/d/1gsGD2WEfJltbKP_JaWvKrThKGTu955SB/view', cover: 'https://images.unsplash.com/photo-1505797149-43b0069ec26b?auto=format&fit=crop&w=300&q=80' },
+                { name: 'Comfort Seating / Sofas', url: 'https://drive.google.com/file/d/1OOzNJVlNa4FGa0PFYfhwyktcJ66enzaO/view', cover: 'https://images.unsplash.com/photo-1484101403633-562f891dc89a?auto=format&fit=crop&w=300&q=80' },
+                { name: 'Lockers & Metal Benches', url: 'https://drive.google.com/file/d/1weOuRxFnnQEqVD2LzAT8lwsZHxOdW-Id/view', cover: 'https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=300&q=80' },
+                { name: 'Racks & Storage Systems', url: 'https://drive.google.com/file/d/18F9NjoSstNn4TWGCFzllgycNnKPq7KqH/view', cover: 'https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?auto=format&fit=crop&w=300&q=80' }
+            ],
+            hospitality: [
+                { name: 'Pergolas & Landscape', url: 'https://drive.google.com/file/d/1GB7cPG6niBzE7Qx8OzhNocovxGxcNW9e/view', cover: 'https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&w=300&q=80' },
+                { name: 'Outdoor Furniture', url: 'https://drive.google.com/file/d/1R005gQFpZaov8xcni9SM5DHi40mi0lp_/view', cover: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=300&q=80' },
+                { name: 'Conference Hall Furniture', url: 'https://drive.google.com/file/d/17d5dsL0bIKomFlm2zuXIc22JF03U4GZw/view', cover: 'https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=300&q=80' },
+                { name: 'Hospitality & Hotel Supplies', url: 'https://drive.google.com/file/d/177dc-fdiDPIJZXagjoLMD3SRH5H5hcJq/view?usp=drive_link', cover: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=300&q=80' }
+            ],
+            advertising: [
+                { name: 'Advertising Services Agency', url: 'https://drive.google.com/file/d/1QxbxxMo728gJFLtmJU-h64HuFV6CPdOM/view?usp=drive_link', cover: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=300&q=80' },
+                { name: 'Signboards & Facades', url: 'https://drive.google.com/file/d/1Cp3rw6xZKXyvvNuhXaYre68ZTDKFnlve/view?usp=drive_link', cover: 'https://images.unsplash.com/photo-1542744094-3a31f103e35f?auto=format&fit=crop&w=300&q=80' }
+            ]
+        };
+
+        const logoImages = [
+            'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=120&q=80',
+            'https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?auto=format&fit=crop&w=120&q=80',
+            'https://images.unsplash.com/photo-1614680376593-902f74fa0d41?auto=format&fit=crop&w=120&q=80',
+            'https://images.unsplash.com/photo-1614680376739-414d95ff43df?auto=format&fit=crop&w=120&q=80'
+        ];
+
+        // Event Listeners
+        document.getElementById('scrollTopBtn').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        document.getElementById('contactForm').addEventListener('submit', handleContactForm);
+        
+        window.addEventListener('scroll', () => {
+            // Scroll top button
+            const scrollBtn = document.getElementById('scrollTopBtn');
+            if (window.scrollY > 500) scrollBtn.classList.add('show');
+            else scrollBtn.classList.remove('show');
+
+            // Active nav link
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // DOM Population Functions
+        function initHeroCarousel() {
+            const carousel = document.getElementById('heroCarousel');
+            carousel.innerHTML = heroSlides.map((slide, i) => `
+                <div class="hero-slide ${i === 0 ? 'active' : ''}">
+                    <img src="${slide}" alt="Hero Slide ${i + 1}">
+                </div>
+            `).join('');
+
+            let currentSlide = 0;
+            setInterval(() => {
+                const slides = document.querySelectorAll('.hero-slide');
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }, 5000);
+        }
+
+        function populateTeam() {
+            const grid = document.getElementById('teamGrid');
+            grid.innerHTML = teamMembers.map(member => `
+                <div class="team-member">
+                    <div class="team-member-image">
+                        <img src="${member.image}" alt="${member.name}">
+                    </div>
+                    <h3>${member.name}</h3>
+                    <p>${member.role}</p>
+                </div>
+            `).join('');
+        }
+
+        function populateServices() {
+            const grid = document.getElementById('servicesGrid');
+            grid.innerHTML = services.map(service => `
+                <div class="service-card" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">
+                    <div class="service-card-image">
+                        <img src="${service.image}" alt="${service.title}">
+                    </div>
+                    <div class="service-card-content">
+                        <h3>${service.title}</h3>
+                        <p>${service.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function populateCatalogs() {
+            const tabsContainer = document.getElementById('catalogTabs');
+            const categories = Object.keys(catalogs);
+            
+            tabsContainer.innerHTML = `
+                <button class="tab-button active" onclick="filterCatalogs('all', event)">All Catalogs</button>
+                ${categories.map(cat => `
+                    <button class="tab-button" onclick="filterCatalogs('${cat}', event)">${cat.charAt(0).toUpperCase() + cat.slice(1)}</button>
+                `).join('')}
+            `;
+
+            filterCatalogs('all');
+        }
+
+        function filterCatalogs(category, event) {
+            if (event) {
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                event.target.classList.add('active');
+            }
+
+            const grid = document.getElementById('catalogGrid');
+            let itemsToDisplay = [];
+
+            if (category === 'all') {
+                Object.values(catalogs).forEach(catItems => {
+                    itemsToDisplay = [...itemsToDisplay, ...catItems];
+                });
+            } else {
+                itemsToDisplay = catalogs[category];
+            }
+            
+            grid.innerHTML = itemsToDisplay.map(item => `
+                <div class="catalog-card">
+                    <div class="catalog-card-image">
+                        <img src="${item.cover}" alt="${item.name}">
+                    </div>
+                    <div class="catalog-card-content">
+                        <h4>${item.name}</h4>
+                        <a href="${item.url}" class="download-button" target="_blank">Download</a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function populateClients() {
+            const carousel = document.getElementById('clientsCarousel');
+            const doubledLogos = [...logoImages, ...logoImages];
+            carousel.innerHTML = doubledLogos.map((logo, i) => `
+                <div class="client-logo">
+                    <img src="${logo}" alt="Client ${i % logoImages.length + 1}">
+                </div>
+            `).join('');
+        }
+
+        function handleContactForm(e) {
+            e.preventDefault();
+            alert('Thank you for reaching out! We will get back to you soon.');
+            e.target.reset();
+        }
+
+        // Initialize
+        initHeroCarousel();
+        populateTeam();
+        populateServices();
+        populateCatalogs();
+        populateClients();
+    </script>
+</body>
+</html>
